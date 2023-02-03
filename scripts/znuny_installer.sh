@@ -163,7 +163,7 @@ function InstallZnuny
         a2enmod headers 1> /dev/null
         a2dismod mpm_event 1> /dev/null
         a2enmod mpm_prefork 1> /dev/null
-        service apache2 restart 1> /dev/null
+        systemctl restart apache2 1> /dev/null
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -185,7 +185,7 @@ function InstallZnuny
         fi
         
         echo -n "Reiniciando o MariaDB........................"
-        service mysql restart 1> /dev/null
+        systemctl restart mysql 1> /dev/null
         if [ $? = 0 ]; then
                 echo "OK"
         else
