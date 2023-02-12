@@ -173,11 +173,11 @@ function InstallZnuny
         # Ajustando parametros necessarios do MySQL:
         echo -n "Alterando parametros do MariaDB.............."
                 sed -i "s/.*max_allowed_packet.*/#max_allowed_packet = 128M/" ${MYSQL_CONF_DIR}/50-server.cnf
-                echo "[mysqld]" > ${MYSQL_CONF_DIR}/50-znuny.cnf
-                echo "character-set-server = utf8" >> ${MYSQL_CONF_DIR}/50-znuny.cnf
-                echo "collation-server= utf8_general_ci" >> ${MYSQL_CONF_DIR}/50-znuny.cnf
-                echo "innodb_log_file_size = 512M" >> ${MYSQL_CONF_DIR}/50-znuny.cnf
-                echo "max_allowed_packet = 128M" >> ${MYSQL_CONF_DIR}/50-znuny.cnf
+                echo "[mysqld]" > ${MYSQL_CONF_DIR}/70-znuny.cnf
+                echo "character-set-server = utf8" >> ${MYSQL_CONF_DIR}/70-znuny.cnf
+                echo "collation-server= utf8_general_ci" >> ${MYSQL_CONF_DIR}/70-znuny.cnf
+                echo "innodb_log_file_size = 512M" >> ${MYSQL_CONF_DIR}/70-znuny.cnf
+                echo "max_allowed_packet = 128M" >> ${MYSQL_CONF_DIR}/70-znuny.cnf
         if [ $? = 0 ]; then
                 echo "OK"
         else
