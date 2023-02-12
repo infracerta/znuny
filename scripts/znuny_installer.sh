@@ -185,7 +185,7 @@ function InstallZnuny
         fi
         
         echo -n "Reiniciando o MariaDB........................"
-        systemctl restart mysql 1> /dev/null
+        systemctl restart mariadb 1> /dev/null
         if [ $? = 0 ]; then
                 echo "OK"
         else
