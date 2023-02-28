@@ -9,7 +9,7 @@
 #Variaveis
 # Coloque a versão do OTRS que deseja instalar na variavel abaixo
 export ZNUNY_VERSION="6.0.48"
-export ZNUNY_INSTALL_DIR="/opt/"
+export ZNUNY_INSTALL_DIR="/opt"
 export REQ_PACKAGES="libapache2-mod-perl2 libdbd-mysql-perl libtimedate-perl libnet-dns-perl libnet-ldap-perl libio-socket-ssl-perl libpdf-api2-perl libdbd-mysql-perl libsoap-lite-perl libgd-text-perl libtext-csv-xs-perl libjson-xs-perl libgd-graph-perl libapache-dbi-perl libdigest-md5-perl apache2 libapache2-mod-perl2 mariadb-client mariadb-server libarchive-zip-perl libxml-libxml-perl libtemplate-perl libyaml-libyaml-perl libdatetime-perl libmail-imapclient-perl libmoo-perl"
 export MYSQL_CONF_DIR="/etc/mysql/mariadb.conf.d"
 
@@ -122,7 +122,7 @@ function InstallZnuny
 
         #Criando links simbolicos e movendo os arquivos
         echo -n "Criando links simbolicos..................."
-        ln -s ${ZNUNY_INSTALL_DIR}otrs/scripts/apache2-httpd.include.conf /etc/apache2/conf-enabled/ 1> /dev/null
+        ln -s ${ZNUNY_INSTALL_DIR}/otrs/scripts/apache2-httpd.include.conf /etc/apache2/conf-enabled/ 1> /dev/null
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -130,7 +130,7 @@ function InstallZnuny
         fi
 
         echo -n "Movendo arquivos necessários..............."
-        mv ${ZNUNY_INSTALL_DIR}otrs/Kernel/Config.pm.dist ${ZNUNY_INSTALL_DIR}/otrs/Kernel/Config.pm 1> /dev/null
+        mv ${ZNUNY_INSTALL_DIR}/otrs/Kernel/Config.pm.dist ${ZNUNY_INSTALL_DIR}/otrs/Kernel/Config.pm 1> /dev/null
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -139,9 +139,9 @@ function InstallZnuny
 
         #Adicionando o user OTRS e setando as permissoes necessarias
         echo -n "Configurando usuarios e  permissoes........"
-        useradd -d ${ZNUNY_INSTALL_DIR}otrs/ -s /bin/bash -c 'OTRS user' otrs 1> /dev/null
+        useradd -d ${ZNUNY_INSTALL_DIR}/otrs/ -s /bin/bash -c 'OTRS user' otrs 1> /dev/null
         usermod -G www-data otrs 1> /dev/null
-        ${ZNUNY_INSTALL_DIR}otrs/bin/otrs.SetPermissions.pl --otrs-user otrs --web-group www-data ${ZNUNY_INSTALL_DIR}otrs 1> /dev/null
+        ${ZNUNY_INSTALL_DIR}/otrs/bin/otrs.SetPermissions.pl --otrs-user otrs --web-group www-data ${ZNUNY_INSTALL_DIR}/otrs 1> /dev/null
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -150,7 +150,7 @@ function InstallZnuny
 
         #Configurando a cron
         echo -n "Configurando e iniciando a crontab........."
-        cd ${ZNUNY_INSTALL_DIR}otrs/var/cron/ && for foo in *.dist; do cp $foo `basename $foo .dist`; done
+        cd ${ZNUNY_INSTALL_DIR}/otrs/var/cron/ && for foo in *.dist; do cp $foo `basename $foo .dist`; done
         chown otrs:www-data /opt/otrs/var/cron/otrs_daemon
         if [ $? = 0 ]; then
                 echo "OK"
