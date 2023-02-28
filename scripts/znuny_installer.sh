@@ -61,7 +61,7 @@ function BasicCheck()
 {
         echo "Executando verificacoes basicas do sistema"
         #Resolucao DNS
-        nslookup znuny.org | grep "Non-authoritative answer:" 1> /dev/null
+        nslookup znuny.org | grep "Non-authoritative answer:" 1>/dev/null
         if [ $? = 1 ];then
                 echo "ERRO: Impossivel resolver znuny.org, favor verificar suas configuracoes de DNS..."
                 exit
@@ -69,7 +69,7 @@ function BasicCheck()
                 echo "Resolucao DNS.........................OK"
         fi
         #Verifica se o usuario atual e o root
-        id |grep "uid=0" 1> /dev/null
+        id |grep "uid=0" 1>/dev/null
         if [ $? = 1 ] ;then
                 echo "ERRO: E necessario fazer login como root para iniciar a instalacao.";exit
         else
@@ -185,7 +185,7 @@ function InstallZnuny
         fi
         
         echo -n "Reiniciando o MariaDB........................"
-        systemctl restart mariadb 1> /dev/null
+        systemctl restart mariadb 1>/dev/null
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -194,6 +194,7 @@ function InstallZnuny
 
         echo -n "Adicionando senha ao MariaDB........................"
         export MARIADB_PASS=$(tr -dc 'A-Za-z0-9!"#$%&*+@' </dev/urandom | head -c 18 ; echo)
+	echo ${MARIADB_PASS} > /root/database_pass.txt
         mysql -u root -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY "'${MARIADB_PASS}'";'
         if [ $? = 0 ]; then
                 echo "OK"
@@ -204,6 +205,7 @@ function InstallZnuny
         echo ""
         echo "OTRS/Znuny instalado com sucesso! Acesse o endereço http://$(ip route get 8.8.8.8 | awk -F"src " 'NR==1{split($2,a," ");print a[1]}')/otrs/installer.pl para finalizar a configuração do sistema."
         echo "Durante a configuração será solicitada a senha do banco de dados. Utilize o usuário root com a seguinte senha: ${MARIADB_PASS}"
+	echo "A senha descrita acima também pode ser encontrada em /root/database_pass.txt"
 }
 
 function CallCase()
