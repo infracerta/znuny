@@ -102,7 +102,7 @@ function InstallZnuny
         # Descompactando o arquivo
         echo -n "Descompactando o arquivo..................."
         cd ${ZNUNY_INSTALL_DIR}
-        tar -zxvf znuny\-${ZNUNY_VERSION}\.tar\.gz 1> /dev/null
+        tar -zxf znuny\-${ZNUNY_VERSION}\.tar\.gz
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -112,7 +112,7 @@ function InstallZnuny
 
         # Renomeando o diretorio OTRS/Znuny
         echo -n "Renomeando o diretorio do OTRS/Znuny......."
-        mv znuny-${ZNUNY_VERSION} otrs 1> /dev/null
+        mv znuny-${ZNUNY_VERSION} otrs
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -122,7 +122,7 @@ function InstallZnuny
 
         #Criando links simbolicos e movendo os arquivos
         echo -n "Criando links simbolicos..................."
-        ln -s ${ZNUNY_INSTALL_DIR}/otrs/scripts/apache2-httpd.include.conf /etc/apache2/conf-enabled/ 1> /dev/null
+        ln -s ${ZNUNY_INSTALL_DIR}/otrs/scripts/apache2-httpd.include.conf /etc/apache2/conf-enabled/
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -140,7 +140,7 @@ function InstallZnuny
         #Adicionando o user OTRS e setando as permissoes necessarias
         echo -n "Configurando usuarios e  permissoes........"
         useradd -d ${ZNUNY_INSTALL_DIR}/otrs/ -s /bin/bash -c 'OTRS user' otrs 1> /dev/null
-        usermod -G www-data otrs 1> /dev/null
+        usermod -G www-data otrs
         ${ZNUNY_INSTALL_DIR}/otrs/bin/otrs.SetPermissions.pl --otrs-user otrs --web-group www-data ${ZNUNY_INSTALL_DIR}/otrs 1> /dev/null
         if [ $? = 0 ]; then
                 echo "OK"
