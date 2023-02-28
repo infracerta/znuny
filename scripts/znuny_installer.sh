@@ -90,7 +90,7 @@ function InstallZnuny
         echo -n "Baixar arquivo do OTRS/Znuny..............."
         cd ${ZNUNY_INSTALL_DIR}
         if [[ ! -f otrs-${ZNUNY_VERSION}.tar.gz ]]; then
-                wget https://download.znuny.org/releases/znuny\-${ZNUNY_VERSION}.tar.gz 1> /dev/null
+                curl -s --output znuny\-${ZNUNY_VERSION}.tar.gz https://download.znuny.org/releases/znuny\-${ZNUNY_VERSION}.tar.gz
         fi
         if [ $? != 0 ]; then
                 clear
