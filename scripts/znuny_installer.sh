@@ -2,7 +2,7 @@
 
 # Script de instalação do OTRS/Znuny para o Sistema Operacional Ubuntu
 #
-# Desenvolvido por Infracerta Consultoria
+# Desenvolvido por Infracerta Consultoria - Para suporte comercial fale conosco em contato@infracerta.com.br
 # Sempre recomendamos analisar o script antes de instala-lo!
 # Homologado para ubuntu 20.04 - usar um SO diferente pode trazer resultados inesperados.
 #
