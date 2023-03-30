@@ -2,15 +2,15 @@
 
 # Script de instalação do OTRS/Znuny para o Sistema Operacional Ubuntu
 #
-# Desenvolvido por Infracerta Consultoria
+# Desenvolvido por Infracerta Consultoria - Para suporte comercial fale conosco em contato@infracerta.com.br
 # Sempre recomendamos analisar o script antes de instala-lo!
 # Homologado para ubuntu 20.04 - usar um SO diferente pode trazer resultados inesperados.
 #
 #Variaveis
 # Coloque a versão do OTRS que deseja instalar na variavel abaixo
 export ZNUNY_VERSION="6.0.48"
-export ZNUNY_INSTALL_DIR="/opt/"
-export REQ_PACKAGES="libapache2-mod-perl2 libdbd-mysql-perl libtimedate-perl libnet-dns-perl libnet-ldap-perl libio-socket-ssl-perl libpdf-api2-perl libdbd-mysql-perl libsoap-lite-perl libgd-text-perl libtext-csv-xs-perl libjson-xs-perl libgd-graph-perl libapache-dbi-perl libdigest-md5-perl apache2 libapache2-mod-perl2 mariadb-client mariadb-server libarchive-zip-perl libxml-libxml-perl libtemplate-perl libyaml-libyaml-perl libdatetime-perl libmail-imapclient-perl libmoo-perl"
+export ZNUNY_INSTALL_DIR="/opt"
+export REQ_PACKAGES="libapache2-mod-perl2 libdbd-mysql-perl libtimedate-perl libnet-dns-perl libnet-ldap-perl libio-socket-ssl-perl libpdf-api2-perl libdbd-mysql-perl libsoap-lite-perl libgd-text-perl libtext-csv-xs-perl libjson-xs-perl libgd-graph-perl libapache-dbi-perl libdigest-md5-perl apache2 libapache2-mod-perl2 mariadb-client mariadb-server libarchive-zip-perl libxml-libxml-perl libtemplate-perl libyaml-libyaml-perl libdatetime-perl libmail-imapclient-perl libmoo-perl libical-parser-perl"
 export MYSQL_CONF_DIR="/etc/mysql/mariadb.conf.d"
 
 function MainMenu()
@@ -61,7 +61,7 @@ function BasicCheck()
 {
         echo "Executando verificacoes basicas do sistema"
         #Resolucao DNS
-        nslookup znuny.org | grep "Non-authoritative answer:" 1> /dev/null
+        nslookup znuny.org | grep "Non-authoritative answer:" 1>/dev/null
         if [ $? = 1 ];then
                 echo "ERRO: Impossivel resolver znuny.org, favor verificar suas configuracoes de DNS..."
                 exit
@@ -69,7 +69,7 @@ function BasicCheck()
                 echo "Resolucao DNS.........................OK"
         fi
         #Verifica se o usuario atual e o root
-        id |grep "uid=0" 1> /dev/null
+        id |grep "uid=0" 1>/dev/null
         if [ $? = 1 ] ;then
                 echo "ERRO: E necessario fazer login como root para iniciar a instalacao.";exit
         else
@@ -90,7 +90,7 @@ function InstallZnuny
         echo -n "Baixar arquivo do OTRS/Znuny..............."
         cd ${ZNUNY_INSTALL_DIR}
         if [[ ! -f otrs-${ZNUNY_VERSION}.tar.gz ]]; then
-                wget https://download.znuny.org/releases/znuny\-${ZNUNY_VERSION}.tar.gz 1> /dev/null
+                curl -s --output znuny\-${ZNUNY_VERSION}.tar.gz https://download.znuny.org/releases/znuny\-${ZNUNY_VERSION}.tar.gz
         fi
         if [ $? != 0 ]; then
                 clear
@@ -102,7 +102,7 @@ function InstallZnuny
         # Descompactando o arquivo
         echo -n "Descompactando o arquivo..................."
         cd ${ZNUNY_INSTALL_DIR}
-        tar -zxvf znuny\-${ZNUNY_VERSION}\.tar\.gz 1> /dev/null
+        tar -zxf znuny\-${ZNUNY_VERSION}\.tar\.gz
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -112,7 +112,7 @@ function InstallZnuny
 
         # Renomeando o diretorio OTRS/Znuny
         echo -n "Renomeando o diretorio do OTRS/Znuny......."
-        mv znuny-${ZNUNY_VERSION} otrs 1> /dev/null
+        mv znuny-${ZNUNY_VERSION} otrs
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -122,7 +122,7 @@ function InstallZnuny
 
         #Criando links simbolicos e movendo os arquivos
         echo -n "Criando links simbolicos..................."
-        ln -s ${ZNUNY_INSTALL_DIR}/otrs/scripts/apache2-httpd.include.conf /etc/apache2/conf-enabled/ 1> /dev/null
+        ln -s ${ZNUNY_INSTALL_DIR}otrs/scripts/apache2-httpd.include.conf /etc/apache2/conf-enabled/ 1> /dev/null
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -139,24 +139,15 @@ function InstallZnuny
 
         #Adicionando o user OTRS e setando as permissoes necessarias
         echo -n "Configurando usuarios e  permissoes........"
-        if [ ${ZNUNY_VERSION} = 7*]; then
-                useradd -d ${ZNUNY_INSTALL_DIR}/otrs/ -s /bin/bash -c 'Znuny user' znuny 1> /dev/null
-                usermod -G www-data znuny 1> /dev/null
-                ${ZNUNY_INSTALL_DIR}/otrs/bin/otrs.SetPermissions.pl --znuny-user znuny --web-group www-data ${ZNUNY_INSTALL_DIR}/otrs 1> /dev/null
-                if [ $? = 0 ]; then
-                        echo "OK"
-                else
-                        echo "Ocorreu durante essa etapa, verifique o log acima";exit
-                fi
+        useradd -d ${ZNUNY_INSTALL_DIR}otrs/ -s /bin/bash -c 'OTRS user' otrs 1> /dev/null
+        usermod -G www-data otrs 1> /dev/null
+        ${ZNUNY_INSTALL_DIR}otrs/bin/otrs.SetPermissions.pl --otrs-user otrs --web-group www-data ${ZNUNY_INSTALL_DIR}otrs 1> /dev/null
+        if [ $? = 0 ]; then
+                echo "OK"
         else
-                useradd -d ${ZNUNY_INSTALL_DIR}/otrs/ -s /bin/bash -c 'OTRS user' otrs 1> /dev/null
-                usermod -G www-data otrs 1> /dev/null
-                ${ZNUNY_INSTALL_DIR}/otrs/bin/otrs.SetPermissions.pl --otrs-user otrs --web-group www-data ${ZNUNY_INSTALL_DIR}/otrs 1> /dev/null
-                if [ $? = 0 ]; then
-                        echo "OK"
-                else
-                        echo "Ocorreu durante essa etapa, verifique o log acima";exit
-                fi
+                echo "Ocorreu durante essa etapa, verifique o log acima";exit
+        fi
+
         #Configurando a cron
         echo -n "Configurando e iniciando a crontab........."
         cd ${ZNUNY_INSTALL_DIR}/otrs/var/cron/ && for foo in *.dist; do cp $foo `basename $foo .dist`; done
@@ -194,7 +185,7 @@ function InstallZnuny
         fi
         
         echo -n "Reiniciando o MariaDB........................"
-        systemctl restart mariadb 1> /dev/null
+        systemctl restart mariadb 1>/dev/null
         if [ $? = 0 ]; then
                 echo "OK"
         else
@@ -202,7 +193,8 @@ function InstallZnuny
         fi
 
         echo -n "Adicionando senha ao MariaDB........................"
-        export MARIADB_PASS=$(tr -dc 'A-Za-z0-9!"#$%&*+@' </dev/urandom | head -c 18 ; echo)
+        export MARIADB_PASS=$(tr -dc 'A-Za-z0-9!#$%&*+@' </dev/urandom | head -c 18 ; echo)
+	echo ${MARIADB_PASS} > /root/database_pass.txt
         mysql -u root -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY "'${MARIADB_PASS}'";'
         if [ $? = 0 ]; then
                 echo "OK"
@@ -213,6 +205,7 @@ function InstallZnuny
         echo ""
         echo "OTRS/Znuny instalado com sucesso! Acesse o endereço http://$(ip route get 8.8.8.8 | awk -F"src " 'NR==1{split($2,a," ");print a[1]}')/otrs/installer.pl para finalizar a configuração do sistema."
         echo "Durante a configuração será solicitada a senha do banco de dados. Utilize o usuário root com a seguinte senha: ${MARIADB_PASS}"
+	echo "A senha descrita acima também pode ser encontrada em /root/database_pass.txt"
 }
 
 function CallCase()
