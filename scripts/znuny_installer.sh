@@ -157,7 +157,7 @@ function InstallZnuny
                 else
                         echo "Ocorreu durante essa etapa, verifique o log acima";exit
                 fi
-
+        fi
         #Configurando a cron
         echo -n "Configurando e iniciando a crontab........."
         cd ${ZNUNY_INSTALL_DIR}/otrs/var/cron/ && for foo in *.dist; do cp $foo `basename $foo .dist`; done
