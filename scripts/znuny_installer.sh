@@ -37,7 +37,7 @@
         }
 
         # Instalação dos pacotes necessários para o OTRS/Znuny
-        function InstallREQPKG()
+        function InstallReqPkg()
         {
                 echo -n "Iniciando a instalacao as dependencias..........."
                 apt-get -qq update && apt-get -y -qq install ${REQ_PACKAGES}
@@ -75,10 +75,7 @@
                 else
                         echo "Usuario root..........................OK"
                 fi
-
-                echo -n "Pressione uma tecla pra continuar..."
-                read KEY
-
+                
                 MainMenu
         }
 
@@ -213,7 +210,7 @@
                 case "$OPTION" in
         1) BasicCheck
                         ;;
-                        2) InstallREQPKG
+                        2) InstallReqPkg
                         ;;
                         3) InstallZnuny
                         ;;
