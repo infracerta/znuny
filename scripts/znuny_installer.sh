@@ -90,7 +90,7 @@
                 echo -n "Baixar arquivo do OTRS/Znuny..............."
                 cd /opt
                 if [[ ! -f znuny-${ZNUNY_VERSION}.tar.gz ]]; then
-                        curl -s --output znuny\-${ZNUNY_VERSION}.tar.gz https://download.znuny.org/releases/znuny\-${ZNUNY_VERSION}.tar.gz
+                        curl --insecure -s --output znuny\-${ZNUNY_VERSION}.tar.gz https://download.znuny.org/releases/znuny\-${ZNUNY_VERSION}.tar.gz
                 fi
                 if [ $? != 0 ]; then
                         clear
