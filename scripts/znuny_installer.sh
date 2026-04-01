@@ -192,7 +192,7 @@
                         echo "Erro ao reiniciar o MySQL.";exit
                 fi
 
-                echo -n "Adicionando senha ao MariaDB................."
+                echo -n "Adicionando senha ao MariaDB..............."
                 export MARIADB_PASS=$(tr -dc 'A-Za-z0-9!#$%&*+@' </dev/urandom | head -c 18 ; echo)
                 echo ${MARIADB_PASS} > /root/database_pass.txt
                 mysql -u root -e 'ALTER USER 'root'@'localhost' IDENTIFIED BY "'${MARIADB_PASS}'";'
