@@ -8,7 +8,7 @@
         #
         #Variaveis
         # Coloque a versão do OTRS que deseja instalar na variavel abaixo
-        export ZNUNY_VERSION="7.0.2"
+        export ZNUNY_VERSION="7.3.1"
         export ZNUNY_INSTALL_DIR="/opt/znuny"
         export REQ_PACKAGES="libapache2-mod-perl2 libdbd-mysql-perl libtimedate-perl libnet-dns-perl libnet-ldap-perl libio-socket-ssl-perl libpdf-api2-perl libdbd-mysql-perl libsoap-lite-perl libgd-text-perl libtext-csv-xs-perl libjson-xs-perl libgd-graph-perl libapache-dbi-perl libdigest-md5-perl apache2 libapache2-mod-perl2 mariadb-client mariadb-server libarchive-zip-perl libxml-libxml-perl libtemplate-perl libyaml-libyaml-perl libdatetime-perl libmail-imapclient-perl libmoo-perl libical-parser-perl"
         export MYSQL_CONF_DIR="/etc/mysql/mariadb.conf.d"
@@ -75,6 +75,9 @@
                 else
                         echo "Usuario root..........................OK"
                 fi
+
+                echo "Verificação concluída, pressione qualquer tecla para continuar..."
+                read -n 1 -s
                 
                 MainMenu
         }
